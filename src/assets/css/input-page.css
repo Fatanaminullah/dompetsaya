@@ -1,0 +1,13 @@
+.group-input{
+    border: 5px solid #dcdcdc;
+    border-style: outset;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    padding-right: 5px;
+    padding-left: 5px
+}
+
+.group-input p{
+    font-family: 'algerian';
+    font-size: 20px;
+}
