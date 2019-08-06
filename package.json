@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "antd": "3.7.1",
+    "antd": "3.9.0",
     "ati-react-web": "1.0.55-rc8",
     "ati-reduxform-web": "1.0.6",
     "ati-web-security": "1.0.30",
@@ -55,6 +55,7 @@
     "redux": "3.7.2",
     "redux-form": "^8.2.5",
     "redux-logger": "3.0.6",
+    "redux-thunk": "^2.3.0",
     "styled-components": "3.3.3",
     "text-mask-addons": "3.7.2",
     "voca": "1.4.0"

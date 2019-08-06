@@ -1,0 +1,16 @@
+.anticon.anticon-right-circle.next,
+.anticon.anticon-check-circle.finish,
+.anticon.anticon-left-circle.back{
+        font-size: 45px;
+        color: aqua;
+        transition: transform .2s;
+}
+
+.anticon.anticon-check-circle.finish:hover,
+.anticon.anticon-right-circle.next:hover,
+.anticon.anticon-left-circle.back:hover{
+        transform: scale(1.5); 
+        font-size: 55px;
+        color: aqua;
+        cursor: pointer;
+}
