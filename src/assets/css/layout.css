@@ -1,0 +1,70 @@
+.trigger {
+    font-size: 18px;
+    line-height: 64px;
+    padding: 0 24px;
+    cursor: pointer;
+    transition: color .3s;
+}
+  
+.trigger:hover {
+    color: #1890ff;
+}
+
+.popover-container > .ant-popover-inner {
+    border-radius: 0%;
+}
+
+.float-left {
+    float: left;
+}
+
+.float-right{
+    float: right;
+}
+
+.account-menu{
+    float: right;
+}
+
+.logo {
+    display: inherit;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    padding-bottom: 15px;
+    padding-top: 15px;
+}
+
+.page {
+    background-color: white !important;
+    /* min-height: 360px; */
+    padding: 16px;
+    border-radius: 5px;
+    box-shadow: 0 2.5px 10px 0 rgba(0, 0, 0, 0.03);
+}
+
+.bordered {
+    padding-top: 30px;
+    padding-bottom: 16px;
+    border: 0.5px solid #e6e7e9;
+    border-radius: 10px;
+}
+
+.div-title {
+    font-family: 'Comic Sans MS' !important;
+    font-size: 3vh;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    text-align: left;
+    color: #033552;
+}
+
+.profile-picture{
+    width: 50px;
+    height: 50px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

@@ -10,10 +10,10 @@ class RegisterPage extends Component {
 
     state = {
         defaultProfilePicture: profilePicture,
-        currentStep : 2,
+        currentStep : 0,
         gender : 1,
         spinner : false,
-        notifSuccess: false
+        notifSuccess: false 
     }
 
     nextStepRegister = () => {
@@ -50,7 +50,7 @@ class RegisterPage extends Component {
                     spinner:false,
                     notifSuccess:true
                 })
-            },3000
+            },1000
         )
     }
 
@@ -81,8 +81,7 @@ class RegisterPage extends Component {
             <React.Fragment>
                 <RegisterComponent
                     dataSource={registerStep}
-                    currentStep={this.state.currentStep}
-                    
+                    currentStep={this.state.currentStep}           
                 />
             </React.Fragment>
         )

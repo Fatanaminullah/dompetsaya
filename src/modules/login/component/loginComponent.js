@@ -12,6 +12,10 @@ class loginComponent extends Component{
       }
 
       render(){
+        const {
+            onChange, initialData,
+            validation
+        } = this.props;
           return(
               <React.Fragment>
                   <Row type='flex' align='middle' className='login'>
@@ -23,10 +27,10 @@ class loginComponent extends Component{
                         hoverable
                         content={
                             <AtiForm
-                        // initialValues={initialData}
+                        initialValues={initialData}
                         // onSubmit={onSubmit}
                         formId="login-form"
-                        // validation={validation}
+                        validation={validation}
                         style={{ width: '50%'}}
                         className='form form-login'
                     >
@@ -45,8 +49,8 @@ class loginComponent extends Component{
                                         className="login-form"
                                         placeholder="Username ... "
                                         type="text"
-                                        // value={initialData.username}
-                                        // events={{ onChange: onValueChange }}
+                                        value={initialData.username}
+                                        events={{ onChange: onChange }}
                                         containerStyle={
                                             {
                                                 marginBottom: '0 !important',
@@ -66,8 +70,8 @@ class loginComponent extends Component{
                                         placeholder="Password ... "
                                         className="login-form form-control-md form-control"
                                         type="text"
-                                        // value={initialData.password}
-                                        // events={{ onChange: onValueChange }}
+                                        value={initialData.password}
+                                        events={{ onChange: onChange }}
                                         containerStyle={
                                             {
                                                 marginBottom: '0 !important',

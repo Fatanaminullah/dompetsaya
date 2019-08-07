@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Icon } from 'antd'
 import { AtiField, AtiForm } from 'ati-reduxform-web';
-import { AtiTextbox, AtiTextPassword, AtiFieldError, AtiButton, AtiDatePicker, AtiRadioButton, AtiTooltip, AtiTextAreaField, AtiSelectBox, AtiTextPhoneNumber, AtiTextInputNumeric } from 'ati-react-web';
+import { AtiTextbox,  AtiFieldError, AtiTooltip, AtiTextAreaField, AtiSelectBox, AtiTextInputNumeric } from 'ati-react-web';
 import '../../../assets/css/register-step.css'
 
 class RegisterPhaseTwo extends Component {
