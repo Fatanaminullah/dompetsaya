@@ -4,6 +4,9 @@ import createHistory from 'history/createHashHistory';
 import { createBrowserHistory } from 'history';
 import thunk from 'redux-thunk';
 import { connectRouter,routerMiddleware } from 'connected-react-router';
+import layoutReducer from '../layout/store/layout-reducer';
+import loginReducer from '../../modules/login/store/login-reducer'
+
 
 
 
@@ -12,7 +15,9 @@ const browserHistory = createBrowserHistory();
 
 
 const reducers = combineReducers({
-    router : connectRouter(browserHistory)
+    router : connectRouter(browserHistory),
+    layout: layoutReducer,
+    login:loginReducer
 })
 
 const middleware = routerMiddleware(browserHistory);

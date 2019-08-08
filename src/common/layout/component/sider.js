@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import { Layout, Menu, Icon } from 'antd';
-import { AtiSideMenu } from 'ati-react-web';
+import CONSTANTS from '../../utils/Constants';
+
 
 const { Sider } = Layout;
 
@@ -15,9 +16,8 @@ class LayoutSider extends Component {
         this.setState({ collapsed });
       };
 
-    render(){
-        
-        
+    render(){   
+      console.log(this.props.menuKey);    
         return(
             <React.Fragment>
                 <Sider collapsible 
@@ -27,22 +27,37 @@ class LayoutSider extends Component {
                 >
           <div className="logo">
               <div className='div-title d-flex'>
-                  <Icon type="wallet" /> DOMPETSAYA
+                  <Icon type="wallet" />
+                  <span>
+                  DOMPETSAYA
+                  </span>
               </div>
 
           </div>
-          <Menu theme="light" mode="inline" defaultSelectedKeys={['1']}>
-            <Menu.Item key="1">
+          <Menu theme="light" mode="inline" 
+          defaultSelectedKeys={this.props.menuKey.length === 0 ? [CONSTANTS.PROFILE_PAGE] : this.props.menuKey} 
+          >
+            <Menu.Item 
+              key="PROFILEPAGE"
+              onClick={() => {this.props.navigate(CONSTANTS.PROFILE_PAGE)}}
+              >
               <Icon type="user" />
-              <span>Profile</span>
+              <span>
+                Profile
+              </span>
             </Menu.Item>
-            <Menu.Item key="2">
-              <Icon type="video-camera" />
-              <span>Pencatatan</span>
+            <Menu.Item 
+              key="INPUTNOTESPAGE"
+              onClick={() => {this.props.navigate(CONSTANTS.INPUT_NOTES)}}
+              >
+            <Icon type="account-book" />
+              <span>
+              Input Notes
+              </span>
             </Menu.Item>
             <Menu.Item key="3">
               <Icon type="upload" />
-              <span>Laporan</span>
+              <span>Report</span>
             </Menu.Item>
             <Menu.Item key="3">
               <Icon type="upload" />

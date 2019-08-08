@@ -157,7 +157,8 @@ class RegisterPhaseOne extends Component {
                                 <AtiTooltip
                                 title='Go to the second step'
                                 mouseLeaveDelay={0}
-                                mouseEnterDelay={0.1}
+                                mouseEnterDelay={0}
+                                trigger="hover"
                                 >
                             <Icon type="right-circle" className="next" onClick={nextStepRegister} />
                                 </AtiTooltip>
