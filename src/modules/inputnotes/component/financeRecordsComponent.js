@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import InputSection from './inputSection'
 import { Row, Col } from 'antd';
 import { AtiTabsGroup } from 'ati-react-web';
+import TableSection from './tableSection';
 
 class FinanceRecordsComponent extends Component {
     render(){
@@ -21,7 +22,7 @@ class FinanceRecordsComponent extends Component {
                                 },
                                 { 
                                     title: 'Finance Table', key: 'tab2', 
-                                    tabContent: <div>This Tab 2 Content</div> 
+                                    tabContent: <TableSection />
                                 },
                             ]}
                         />

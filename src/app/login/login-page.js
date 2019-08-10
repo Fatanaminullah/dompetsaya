@@ -56,7 +56,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = (dispatch => ({
-  navigate
+  navigate,onLogin
 }))();
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPage)

@@ -6,6 +6,7 @@ import thunk from 'redux-thunk';
 import { connectRouter,routerMiddleware } from 'connected-react-router';
 import layoutReducer from '../layout/store/layout-reducer';
 import loginReducer from '../../modules/login/store/login-reducer'
+import notesReducer from '../../modules/inputnotes/store/notes-reducer'
 
 
 
@@ -17,7 +18,8 @@ const browserHistory = createBrowserHistory();
 const reducers = combineReducers({
     router : connectRouter(browserHistory),
     layout: layoutReducer,
-    login:loginReducer
+    login:loginReducer,
+    notes:notesReducer
 })
 
 const middleware = routerMiddleware(browserHistory);

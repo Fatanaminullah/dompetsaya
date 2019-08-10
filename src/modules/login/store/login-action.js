@@ -14,14 +14,12 @@ export const onLogin = (username,password) => {
                 }
             })
             console.log(res);
-        },err => {
+        }).catch(error =>{
             dispatch({
                 type : LOGIN_FAILED,
                 payload : 'Login Failed'
             })
-            console.log(err);
-            
-        }
-        )
+            console.log(error.request);
+        })
     }
 }
