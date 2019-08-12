@@ -12,6 +12,10 @@ const menu = {
     INPUTNOTESPAGE: {
         open: 'INPUTNOTESPAGE',
         link: '/dompetsaya/inputnotes',
+    },
+    SETTING : {
+        open: 'SETTING',
+        link: '/dompetsaya/settings'
     }
 };
 

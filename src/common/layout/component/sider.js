@@ -59,9 +59,12 @@ class LayoutSider extends Component {
               <Icon type="upload" />
               <span>Report</span>
             </Menu.Item>
-            <Menu.Item key="3">
-              <Icon type="upload" />
-              <span>Pengaturan</span>
+            <Menu.Item 
+              key="SETTING"
+              onClick={() => {this.props.navigate(CONSTANTS.SETTING)}}
+              >
+              <Icon type="setting" />
+              <span>Settings</span>
             </Menu.Item>
           </Menu>
         </Sider>

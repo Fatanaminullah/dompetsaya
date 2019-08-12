@@ -17,7 +17,7 @@ class LayoutTemplate extends Component {
 }
 
 const mapStateToProps = state => ({
-  ...state.layout, ...state.locale,
+  ...state.layout, ...state.locale,...state.login
 });
 
 const mapDispatchToProps = (dispatch => ({

@@ -1,9 +1,10 @@
 import { LOGIN_SUCCESS,LOGIN_FAILED } from './login-action-type'
-import axios from 'axios'
+import axios from '../../../config/axios'
+import { isExpressionWrapper } from '@babel/types';
 
 export const onLogin = (username,password) => {
     return dispatch => {
-        axios.post('http://localhost:6666/login',{
+        axios.post('/login',{
             username,password
         }).then(res =>{
             dispatch({
@@ -17,9 +18,8 @@ export const onLogin = (username,password) => {
         }).catch(error =>{
             dispatch({
                 type : LOGIN_FAILED,
-                payload : 'Login Failed'
+                payload : error.response.data
             })
-            console.log(error.request);
         })
     }
 }

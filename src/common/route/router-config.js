@@ -3,6 +3,7 @@ import RegisterPage from '../../app/register/register-page'
 import ProfilePage from '../../app/profile/profile-page'
 import LayoutTemplate from './../layout/container/layout-template';
 import InputNotesPage from '../../app/inputnotes/inputnotes-page'
+import SettingPage from '../../app/settings/setting-page'
 
 
 const baseUrl = process.env.PUBLIC_URL;
@@ -15,7 +16,8 @@ const routeSources = [
         child : [
             {component: ProfilePage, path:`/`, exact:true },
             {component: ProfilePage, path:`/profile`, exact:true },
-            {component: InputNotesPage, path:`/inputnotes`, exact:true }
+            {component: InputNotesPage, path:`/inputnotes`, exact:true },
+            {component: SettingPage, path:`/settings`, exact:true }
 
         ]
     },

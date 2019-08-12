@@ -24,7 +24,7 @@ class LayoutHeader extends Component {
                    
                     <div className="float-right d-flex">
                         <p className='text-secondary'>
-                            Ini Username
+                            {this.props.username}
                         </p>
                         <img
                             alt="foto profile"

@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import LoginComponent from '../../modules/login/component/loginComponent';
 import { onLogin } from '../../modules/login/store/login-action'
 import { navigate } from '../../common/store/action/general-action';
+import CONSTANTS from '../../common/utils/Constants';
 
 
 class LoginPage extends Component {
@@ -37,6 +38,7 @@ class LoginPage extends Component {
       }
 
     render(){
+      if(this.props.username === ""){
         return(
             <React.Fragment>
                 <LoginComponent 
@@ -48,11 +50,15 @@ class LoginPage extends Component {
                 />
             </React.Fragment>
         )
+      }
+      else{
+        return this.props.navigate(CONSTANTS.PROFILE_PAGE)
+      }
     }
 }
 
 const mapStateToProps = state => ({
-  ...state.layout, ...state.locale,
+  ...state.layout,...state.login
 });
 
 const mapDispatchToProps = (dispatch => ({
