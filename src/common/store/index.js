@@ -8,6 +8,7 @@ import layoutReducer from '../layout/store/layout-reducer';
 import loginReducer from '../../modules/login/store/login-reducer'
 import notesReducer from '../../modules/inputnotes/store/notes-reducer'
 import settingReducer from '../../modules/settings/store/setting-reducer'
+import profileReducer from '../../modules/profile/store/profile-reducer'
 
 
 
@@ -21,7 +22,8 @@ const reducers = combineReducers({
     layout: layoutReducer,
     login:loginReducer,
     notes:notesReducer,
-    setting:settingReducer
+    setting:settingReducer,
+    profile:profileReducer
 })
 
 const middleware = routerMiddleware(browserHistory);

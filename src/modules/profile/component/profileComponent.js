@@ -4,13 +4,21 @@ import ProfilePicture from './profilePicture'
 import PersonalInfo from './personalInfo'
 import AddressContact from './addressContact'
 import '../../../assets/css/profile-page.css'
+import { AtiSpinner } from 'ati-react-web';
 
 
 export default class ProfileComponent extends Component {
     render() {
-        const { editPersonalInfo, onEditPersonalInfo } = this.props
+        
+        const { editPersonalInfo, onEditPersonalInfo,personalInfo,isLoading } = this.props
         return (
             <React.Fragment>
+                <AtiSpinner 
+                    size={'large'}
+                    tip={'loading'}
+                    spinning={isLoading}
+                >
+
                 <Row type='flex'>
                     <Col span={24} align='left'>
                         <h3 className="text-secondary ml-5">Profile</h3>
@@ -25,6 +33,7 @@ export default class ProfileComponent extends Component {
                         <PersonalInfo
                             editPersonalInfo={editPersonalInfo}
                             onEditPersonalInformation={onEditPersonalInfo}
+                            personalInfo={personalInfo}
                         />
                         </Row>
                         <Row>
@@ -32,8 +41,7 @@ export default class ProfileComponent extends Component {
                         </Row>
                     </Col>
                 </Row>
-
-
+                </AtiSpinner>
             </React.Fragment>
         )
     }

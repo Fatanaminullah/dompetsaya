@@ -12,6 +12,12 @@ class LoginPage extends Component {
         password:''
     }
 
+    componentDidUpdate(prevProps){
+      if(this.props.username !== prevProps.username){
+        return this.props.navigate(CONSTANTS.PROFILE_PAGE)
+      }
+    }
+
     onChange = e => {
       if (e.target.id === 'username') {
         this.setState({ username: e.target.value });
@@ -38,7 +44,6 @@ class LoginPage extends Component {
       }
 
     render(){
-      if(this.props.username === ""){
         return(
             <React.Fragment>
                 <LoginComponent 
@@ -50,10 +55,6 @@ class LoginPage extends Component {
                 />
             </React.Fragment>
         )
-      }
-      else{
-        return this.props.navigate(CONSTANTS.PROFILE_PAGE)
-      }
     }
 }
 
