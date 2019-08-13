@@ -1,13 +1,17 @@
 import React, { Component } from 'react'
-import { AtiCard, AtiButton, AtiTextbox } from 'ati-react-web';
-import { Row, Col, Button, Radio } from 'antd';
+import { AtiCard, AtiButton, AtiTextbox, AtiDatePicker } from 'ati-react-web';
+import { Row, Col, Button, Radio, DatePicker } from 'antd';
+const moment = require('moment');
 
 class PersonalInfo extends Component {
     render() {
         if (this.props.personalInfo.length !== 0) {
 
-            const { editPersonalInfo, onEditPersonalInformation, personalInfo } = this.props
+            const { editPersonalInfo, onEditPersonalInformation, 
+                    personalInfo,handleChange,personalInfoState,
+                    saveEditPersonalInfo } = this.props
             const { nama_depan, nama_belakang, username, email, kelahiran, gender } = personalInfo[0]
+            var birth = moment(kelahiran, 'YYYY/MM/DD')
 
             return (
                 <AtiCard
@@ -25,7 +29,11 @@ class PersonalInfo extends Component {
                                     </Col>
                                     <Col span={12}>
                                         <AtiTextbox
-                                            value={nama_depan}
+                                            id='firstname'
+                                            value={personalInfoState.firstname}
+                                            events={
+                                                {onChange:handleChange}
+                                            }
                                         />
                                     </Col>
                                 </Row>
@@ -35,7 +43,11 @@ class PersonalInfo extends Component {
                                     </Col>
                                     <Col span={12}>
                                     <AtiTextbox
-                                            value={nama_belakang}
+                                            id='lastname'
+                                            value={personalInfoState.lastname}
+                                            events={
+                                                {onChange:handleChange}
+                                            }
                                         />
                                     </Col>
                                 </Row>
@@ -45,7 +57,11 @@ class PersonalInfo extends Component {
                                     </Col>
                                     <Col span={12}>
                                     <AtiTextbox
-                                            value={username}
+                                            id='username'
+                                            value={personalInfoState.username}
+                                            events={
+                                                {onChange:handleChange}
+                                            }
                                         />
                                     </Col>
                                 </Row>
@@ -55,7 +71,11 @@ class PersonalInfo extends Component {
                                     </Col>
                                     <Col span={12}>
                                     <AtiTextbox
-                                            value={email}
+                                            id='email'
+                                            value={personalInfoState.email}
+                                            events={
+                                                {onChange:handleChange}
+                                            }
                                         />
                                     </Col>
                                 </Row>
@@ -64,9 +84,11 @@ class PersonalInfo extends Component {
                                         <p className='text-secondary'> Birthday </p>
                                     </Col>
                                     <Col span={12}>
-                                    <AtiTextbox
-                                            value={kelahiran}
-                                        />
+                                    <DatePicker 
+                                        format='YYYY/MM/DD'
+                                        defaultValue={moment(personalInfoState.birthday, 'YYYY/MM/DD')}
+                                        onChange={handleChange}
+                                    />
                                     </Col>
                                 </Row>
                                 <Row type='flex' justify='start'>
@@ -74,7 +96,13 @@ class PersonalInfo extends Component {
                                         <p className='text-secondary'> Gender </p>
                                     </Col>
                                     <Col span={12}>
-                                        <Radio.Group buttonStyle='solid' defaultValue={gender}>
+                                        <Radio.Group 
+                                            id='gender'
+                                            name='gender'
+                                            buttonStyle='solid'
+                                            defaultValue={personalInfoState.gender}
+                                            onChange={handleChange}
+                                        >
                                             <Radio.Button value="pria">Pria</Radio.Button>
                                             <Radio.Button value="wanita">Wanita</Radio.Button>
                                         </Radio.Group>
@@ -92,7 +120,7 @@ class PersonalInfo extends Component {
                                         text='Save'
                                         className='btn btn-outline-success mx-1'
                                         events={
-                                            { onClick: () => { onEditPersonalInformation() } }
+                                            { onClick: () => { saveEditPersonalInfo() } }
                                         }
                                     />
                                 </Row>
@@ -136,7 +164,9 @@ class PersonalInfo extends Component {
                                         <p className='text-secondary'> Birthday </p>
                                     </Col>
                                     <Col span={12}>
-                                        <p className='text-secondary'> {kelahiran} </p>
+                                        <p className='text-secondary'> 
+                                        {birth.toISOString().split('T')[0]} 
+                                        </p>
                                     </Col>
                                 </Row>
                                 <Row type='flex' justify='start'>

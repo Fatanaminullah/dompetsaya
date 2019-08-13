@@ -1,6 +1,6 @@
 import React , { Component } from 'react'
 import { Table, Row, Icon } from 'antd';
-import { AtiSelectBox, AtiButton, AtiModals, AtiTextbox } from 'ati-react-web';
+import { AtiSelectBox, AtiButton, AtiModals, AtiTextbox, AtiTable } from 'ati-react-web';
 
 class CategorySetting extends Component {
     render(){
