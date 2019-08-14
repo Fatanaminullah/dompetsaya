@@ -59,6 +59,8 @@ class ProfilePage extends Component {
     }
 
     uploadingAvatar = (e) => {
+        console.log(e.target);
+        
         this.setState({
             avatar:URL.createObjectURL(e.target.files[0])
         })

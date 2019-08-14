@@ -1,47 +1,17 @@
 import React, { Component } from 'react'
-import { AtiCard, AtiDatePicker, AtiSelectBox, AtiTextAreaField, AtiButton, AtiTableForm, AtiTable } from 'ati-react-web';
+import { AtiCard, AtiDatePicker, AtiSelectBox, AtiTextAreaField, AtiButton, AtiTableForm, AtiTable, AtiFieldError, AtiTextbox, AtiTextBoxSearchPopup } from 'ati-react-web';
 import { Row, Col, Table } from 'antd'
 import { sortData } from '../../../common/utils/table-utils';
+import { AtiForm, AtiField } from 'ati-reduxform-web';
 
 
 class InputSection extends Component {
     render() {
-        const dataSource = [
-            {
-              key: '1',
-              transaction: 'Pengeluaran',
-              category: 'Makan/Minum',
-              notes: 'Makan Siang di Kantin',
-              amount:'Rp 25,000'
-            },
-          ];
-          
-          const columns = [
-            {
-              title: 'Transaction',
-              dataIndex: 'transaction',
-              key: 'transaction',
-              sorter: (a, b) => a.transaction - b.transaction
-            },
-            {
-              title: 'Category',
-              dataIndex: 'category',
-              key: 'category',
-              sorter: (a, b) => a.category - b.category
-            },
-            {
-              title: 'Notes',
-              dataIndex: 'notes',
-              key: 'notes',
-              sorter: (a, b) => a.notes - b.notes
-            },
-            {
-              title: 'Amount',
-              dataIndex: 'amount',
-              key: 'amount',
-              sorter: (a, b) => a.amount - b.amount
-            }
-          ];
+        const { onDateChanged,transactionType,
+                initialData,onValueChanges,validation,
+                resetFilter,categoryType,onSelectCategory,
+                onValueChangesTable,onSelectCategoryTable } = this.props
+        
         return (
             <React.Fragment>
                 <AtiCard
@@ -50,6 +20,13 @@ class InputSection extends Component {
                     cardTitle="Input Your Daily Income and Expenditure"
                     content={
                         <div>
+                            <AtiForm
+                                initialValues={initialData}
+                                // onSubmit={onSubmitForm}
+                                formId="input-form"
+                                validation={validation}
+
+                            >
                             <Row type='flex' justify='start'>
                                 <Col span={8}>
                                     <p className='text-secondary'>
@@ -57,10 +34,15 @@ class InputSection extends Component {
                                 </p>
                                 </Col>
                                 <Col span={16}>
-                                    <AtiDatePicker
-                                        value={Date.now()}
-                                        dateFormat="DD-MM-YYYY"
-                                    />
+                                    <AtiField name="date">
+                                        <AtiDatePicker
+                                            id="dateInput"
+                                            name="dateInput"
+                                            value={Date.now()}
+                                            dateFormat="DD-MM-YYYY"
+                                        />
+                                        <AtiFieldError />
+                                    </AtiField>
                                 </Col>
                             </Row>
                             <Row type='flex' justify='start'>
@@ -70,13 +52,17 @@ class InputSection extends Component {
                                 </p>
                                 </Col>
                                 <Col span={16}>
-                                    <AtiSelectBox
-                                        placeholder='select your type of transaction'
-                                        data={[
-                                            { label: 'Income(Pemasukan)', value: 'in' },
-                                            { label: 'Expense(Pengeluaran)', value: 'out' }
-                                        ]}
-                                    />
+                                    <AtiField name="transaction">
+                                        <AtiSelectBox
+                                            id="transaction"
+                                            name="transaction"
+                                            events={{onItemChanged:onValueChanges}}
+                                            value={initialData.transaction}
+                                            placeholder='select your type of transaction'
+                                            data={transactionType}
+                                        />
+                                        <AtiFieldError />
+                                    </AtiField>
                                 </Col>
                             </Row>
                             <Row type='flex' justify='start'>
@@ -86,13 +72,17 @@ class InputSection extends Component {
                                 </p>
                                 </Col>
                                 <Col span={16}>
-                                    <AtiSelectBox
-                                        placeholder='select your type of transaction'
-                                        data={[
-                                            { label: 'Income(Pemasukan)', value: 'in' },
-                                            { label: 'Expense(Pengeluaran)', value: 'out' }
-                                        ]}
-                                    />
+                                    <AtiField name="category">
+                                        <AtiSelectBox
+                                            id="category"
+                                            name="category"
+                                            placeholder='select your type of category'
+                                            data={categoryType}
+                                            events={{onItemChanged:onSelectCategory}}
+                                            value={initialData.category}
+                                        />
+                                        <AtiFieldError />
+                                    </AtiField>
                                 </Col>
                             </Row>
                             <Row type='flex' justify='start'>
@@ -102,9 +92,16 @@ class InputSection extends Component {
                                 </p>
                                 </Col>
                                 <Col span={16}>
-                                    <AtiTextAreaField
-                                        placeholder="write your notes here"
-                                    />
+                                    <AtiField name="notes">
+                                        <AtiTextAreaField
+                                            id="notes"
+                                            name="notes"
+                                            value={initialData.notes}
+                                            events={{ onChange : onValueChanges }}
+                                            placeholder="write your notes here"
+                                        />
+                                        <AtiFieldError />
+                                    </AtiField>
                                 </Col>
                             </Row>
                             <Row type='flex'>
@@ -116,33 +113,83 @@ class InputSection extends Component {
                                     />
                                 </Col>
                             </Row>
-
+                            </AtiForm>
                         </div>
                     }
-                />
+                /> 
                 <AtiCard
                     isLoading={false}
-                    cardTitle={
+                    extraStyle={{minHeight:'500px'}}
+                    content={
+                        <div>
                         <Row type='flex' justify='space-between'>
                             <p className='text-secondary'>
                                 Daily Table
                             </p>
                             <AtiDatePicker
-                                value={Date.now()}
+                                defaultValue={initialData.date}
                                 dateFormat="DD-MM-YYYY"
+                                events={
+                                    {
+                                        onDateChange:(e) => {
+                                            onDateChanged(e)
+                                        }
+                                    }
+                                }
                             />
                         </Row>
-                        
-                    }
-                    content={
+                        <Row type='flex'>
+                            <Col span={5} style={{marginRight:'10px'}}>
+                                <AtiSelectBox 
+                                    placeholder='filter transaction'
+                                    events={{onItemChanged:onValueChangesTable}}
+                                    value={initialData.transactionTable}
+                                    data={transactionType}
+                                    />
+                            </Col>
+                            <Col span={5} style={{marginRight:'10px'}}>
+                                <AtiSelectBox
+                                    events={{onItemChanged:onSelectCategoryTable}}
+                                    placeholder='filter category'
+                                    data={initialData.master_kategoriTable}
+                                    value={initialData.categoryTable}
+                                    
+                                />
+                            </Col>
+                            <Col span={5} style={{marginRight:'10px'}}>
+                                <AtiTextbox 
+                                    id='search-notes'
+                                    name='searchnotes'
+                                    value={initialData.searchNotes}
+                                    events={{onChange:onValueChangesTable}}
+                                    placeholder='search notes'
+                                />
+                            </Col>
+                            <Col span={5} style={{marginRight:'10px'}}>
+                                <AtiTextbox 
+                                    placeholder='search amount'
+                                />
+                            </Col>
+                            <Col span={2} >
+                                <AtiButton 
+                                    text='reset filter'
+                                    className='btn btn-outline-danger'
+                                    events={{onClick:resetFilter}}
+                                    icon="reload"
+                                />
+                            </Col>
+
+                        </Row>
                         <Row type='flex'>
                             <Table 
-                                dataSource={dataSource}
-                                columns={columns}
+                                loading={initialData.isLoading}
+                                dataSource={initialData.dataTable}
+                                columns={initialData.columns}
                                 style={{width:'100%'}}
                             />
                             
                         </Row>
+                        </div>
                     }
                 />
             </React.Fragment>

@@ -2,7 +2,7 @@ import { GET_DATA } from './notes-action-type'
 
 
 const initialState = {
-    data : []
+    report : []
 }
 
 export default (state=initialState,action) => {
@@ -10,7 +10,7 @@ export default (state=initialState,action) => {
 
     switch (type) {
         case GET_DATA:
-            return {...state,data:payload}
+            return {...state,report:payload}
         default:
             return state
     }
