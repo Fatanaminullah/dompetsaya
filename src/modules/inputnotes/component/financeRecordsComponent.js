@@ -16,7 +16,7 @@ class FinanceRecordsComponent extends Component {
                 transactionType,initialData,validation,
                 onValueChanges,resetFilter,categoryType,
                 onSelectCategory,onValueChangesTable,
-                onSelectCategoryTable} = this.props
+                onSelectCategoryTable,onChangeMinValue,onChangeMaxValue} = this.props
         
         return(
             <React.Fragment>
@@ -43,6 +43,8 @@ class FinanceRecordsComponent extends Component {
                                         categoryType={categoryType}
                                         onSelectCategory={onSelectCategory}
                                         onSelectCategoryTable={onSelectCategoryTable}
+                                        onChangeMaxValue={onChangeMaxValue}
+                                        onChangeMinValue={onChangeMinValue}
                                     /> 
                                 },
                                 { 
