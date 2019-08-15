@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getData } from '../../modules/inputnotes/store/notes-action'
+import { getData, inputData } from '../../modules/inputnotes/store/notes-action'
 import { getCategory, getTransaction } from '../../modules/settings/store/setting-action'
 import FinanceRecordsComponent from '../../modules/inputnotes/component/financeRecordsComponent'
 import { Row, Popconfirm } from 'antd'
 import Cookies from 'universal-cookie';
-const moment = require('moment');
+import { sortData } from '../../common/utils/table-utils'
+import { navigate } from '../../common/store/action/general-action'
+
 
 const cookie = new Cookies()
 
@@ -16,25 +18,25 @@ class FinanceRecordsPage extends Component {
                 title: 'Transaction',
                 dataIndex: 'transaction',
                 key: 'transaction',
-                sorter: (a, b) => a.transaction - b.transaction
+                sorter: (a, b) => sortData(a, b, 'transaction')
             },
             {
                 title: 'Category',
                 dataIndex: 'category',
                 key: 'category',
-                sorter: (a, b) => a.category - b.category
+                sorter: (a, b) => sortData(a, b, 'category')
             },
             {
                 title: 'Notes',
                 dataIndex: 'notes',
                 key: 'notes',
-                sorter: (a, b) => a.notes - b.notes
+                sorter: (a, b) => sortData(a, b, 'notes')
             },
             {
                 title: 'Amount',
                 dataIndex: 'amount',
                 key: 'amount',
-                sorter: (a, b) => a.amount - b.amount
+                sorter: (a, b) => sortData(a, b, 'amount')
             },
             {
                 title: 'Action',
@@ -56,27 +58,19 @@ class FinanceRecordsPage extends Component {
                 }
             }
         ],
-        date: Date.now(),
-        dateInput: Date.now(),
-        isLoading: true,
-        dataTable: [],
-        notes: '',
-        transaction: 1,
-        transactionTable: '',
-        category: 1,
-        categoryTable: '',
-        master_kategori: [],
-        master_kategoriTable: [],
-        searchNotes: '',
-        minAmount: '',
-        maxAmount: ''
+        date: Date.now(),dateInput: Date.now(),
+        isLoading: true,dataTable: [],
+        notes: '',searchNotes: '',
+        transaction: 1,transactionTable: '',
+        category: 1,categoryTable: '',
+        master_kategori: [],master_kategoriTable: [],
+        minAmount: '',maxAmount: '',amount: '',myBalance: 0
     }
 
     componentDidMount() {
         this.props.getData(cookie.get('id'))
         this.props.getCategory()
         this.props.getTransaction()
-
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -85,6 +79,7 @@ class FinanceRecordsPage extends Component {
             this.filterDataTable()
             this.filterCategory()
             this.filterCategoryTable()
+            this.getBalance()
         }
         if (prevState.transaction !== this.state.transaction) {
             this.filterCategory()
@@ -97,7 +92,44 @@ class FinanceRecordsPage extends Component {
         ) {
             this.filterDataTable()
             this.filterCategoryTable()
+            this.getBalance()
         }
+    }
+
+    onInputData = () => {
+        const { transaction, category, notes, dateInput, amount } = this.state
+        const data = {
+            jenis_transaksi: transaction,
+            kategori: category,
+            keterangan: notes,
+            tanggal: new Date(dateInput).toISOString().split('T')[0],
+            user_id: cookie.get('id'),
+            jumlah: parseInt(amount)
+        }
+        this.props.inputData(data)
+        this.setState({
+            transaction: 1,
+            category: 1,
+            notes: '',
+            date: Date.now(),
+            amount: ''
+        })
+    }
+
+    getBalance = () => {
+        const { report } = this.props
+        var income = 0
+        var spending = 0
+        var balance
+        for (let i = 0; i < report.length; i++) {
+            if (report[i].transaction === 'pemasukan') {
+                income += report[i].amount
+            } else if (report[i].transaction === 'pengeluaran') {
+                spending += report[i].amount
+            }
+        }
+        balance = income - spending
+        this.setState({ myBalance: balance })
     }
 
     filterDataTable = () => {
@@ -106,7 +138,7 @@ class FinanceRecordsPage extends Component {
             var dateState = new Date(this.state.date)
             var min = parseInt(this.state.minAmount)
             var max = parseInt(this.state.maxAmount)
-            
+
             if (
                 isNaN(parseInt(this.state.transactionTable)) &&
                 isNaN(parseInt(this.state.categoryTable)) &&
@@ -127,116 +159,149 @@ class FinanceRecordsPage extends Component {
                     date.getDate() === dateState.getDate() &&
                     item.notes.toLowerCase().includes(this.state.searchNotes)
                 )
-            }else if(
+            } else if (
                 isNaN(parseInt(this.state.transactionTable)) &&
                 isNaN(parseInt(this.state.categoryTable)) &&
                 isNaN(max) &&
                 this.state.searchNotes.length === 0
-                ){
-                return(
+            ) {
+                return (
                     date.getDate() === dateState.getDate() &&
                     item.amount >= min
                 )
-            }else if(
+            } else if (
                 isNaN(parseInt(this.state.transactionTable)) &&
                 isNaN(parseInt(this.state.categoryTable)) &&
                 isNaN(min) &&
                 this.state.searchNotes.length === 0
-            ){  
-                return(
+            ) {
+                return (
                     date.getDate() === dateState.getDate() &&
                     item.amount <= max
                 )
-            }else if(
+            } else if (
                 isNaN(parseInt(this.state.categoryTable)) &&
                 isNaN(min) &&
                 isNaN(max) &&
                 this.state.searchNotes.length === 0
-            ){
-                return(
+            ) {
+                return (
                     date.getDate() === dateState.getDate() &&
                     item.transactionId === this.state.transactionTable
                 )
-    
-            }else if(
+
+            } else if (
+                isNaN(parseInt(this.state.categoryTable)) &&
+                isNaN(min) &&
+                this.state.searchNotes.length === 0
+            ) {
+                return (
+                    date.getDate() === dateState.getDate() &&
+                    item.transactionId === this.state.transactionTable &&
+                    item.amount <= max
+                )
+
+            } else if (
+                isNaN(parseInt(this.state.categoryTable)) &&
+                isNaN(max) &&
+                this.state.searchNotes.length === 0
+            ) {
+                return (
+                    date.getDate() === dateState.getDate() &&
+                    item.transactionId === this.state.transactionTable &&
+                    item.amount >= min
+                )
+            } else if (
                 isNaN(parseInt(this.state.transactionTable)) &&
                 isNaN(parseInt(this.state.categoryTable)) &&
                 this.state.searchNotes.length === 0
-            ){
-                return(
+            ) {
+                return (
                     date.getDate() === dateState.getDate() &&
                     item.amount >= min &&
                     item.amount <= max
                 )
-            }else if(
+            } else if (
                 this.state.searchNotes.length === 0 &&
                 isNaN(min) &&
                 isNaN(max)
-            ){
-                return(
+            ) {
+                return (
                     date.getDate() === dateState.getDate() &&
                     item.transactionId === this.state.transactionTable &&
                     item.categoryId === this.state.categoryTable
                 )
-            }else if(
+            } else if (
                 isNaN(parseInt(this.state.transactionTable)) &&
                 isNaN(parseInt(this.state.categoryTable)) &&
                 isNaN(max)
-            ){
-                return(
+            ) {
+                return (
                     date.getDate() === dateState.getDate() &&
                     item.notes.toLowerCase().includes(this.state.searchNotes) &&
                     item.amount >= min
                 )
-            }else if(
+            } else if (
                 isNaN(parseInt(this.state.transactionTable)) &&
                 isNaN(parseInt(this.state.categoryTable)) &&
                 isNaN(min)
-            ){
-                return(
+            ) {
+                return (
                     date.getDate() === dateState.getDate() &&
                     item.notes.toLowerCase().includes(this.state.searchNotes) &&
                     item.amount <= max
                 )
-            }else if(
+            } else if (
                 isNaN(max) &&
                 isNaN(min)
-            ){
-                return(
+            ) {
+                return (
                     date.getDate() === dateState.getDate() &&
                     item.notes.toLowerCase().includes(this.state.searchNotes) &&
                     item.transactionId === this.state.transactionTable &&
                     item.categoryId === this.state.categoryTable
                 )
-            }else if(
+            } else if (
                 isNaN(max) &&
                 this.state.searchNotes.length === 0
-            ){
-                return(
+            ) {
+                return (
                     item.transactionId === this.state.transactionTable &&
                     item.categoryId === this.state.categoryTable &&
                     item.amount >= min
                 )
-            }else if(
+            } else if (
                 isNaN(min) &&
                 this.state.searchNotes.length === 0
-            ){
-                return(
+            ) {
+                return (
                     item.transactionId === this.state.transactionTable &&
                     item.categoryId === this.state.categoryTable &&
                     item.amount <= max
                 )
-            }else if(
+            } else if (
                 isNaN(parseInt(this.state.transactionTable)) &&
                 isNaN(parseInt(this.state.categoryTable))
-            ){
-                return(
+            ) {
+                return (
                     item.notes.toLowerCase().includes(this.state.searchNotes) &&
                     item.amount <= max &&
                     item.amount >= min
                 )
-            }else{
-                return(
+            } else if (
+                this.state.searchNotes.length === 0 &&
+                isNaN(parseInt(this.state.categoryTable))
+            ) {
+                return (
+                    date.getDate() === dateState.getDate() &&
+                    item.transactionId === this.state.transactionTable &&
+                    item.amount <= max &&
+                    item.amount >= min
+                )
+
+            } else {
+                return (
+                    date.getDate() === dateState.getDate() &&
                     item.transactionId === this.state.transactionTable &&
                     item.categoryId === this.state.categoryTable &&
                     item.notes.toLowerCase().includes(this.state.searchNotes) &&
@@ -301,6 +366,9 @@ class FinanceRecordsPage extends Component {
             this.setState({ transactionTable: e.value })
         }
     }
+    onChangeAmount = e => {
+        this.setState({ amount: e.value })
+    }
     onChangeMinAmount = e => {
         this.setState({ minAmount: e.value })
     }
@@ -353,9 +421,9 @@ class FinanceRecordsPage extends Component {
     render() {
         return (
             <FinanceRecordsComponent
-                initialData={this.state}
+                initialData={this.state} 
                 onDateChanged={this.onDateChanged}
-                onDateInputChanged={this.onDateInputChanged}
+                onDateInputChanged={this.onDateInputChanged} 
                 transactionType={this.props.transaction_type}
                 categoryType={this.state.master_kategori}
                 validation={this.validate}
@@ -366,6 +434,8 @@ class FinanceRecordsPage extends Component {
                 resetFilter={this.resetFilter}
                 onChangeMinValue={this.onChangeMinAmount}
                 onChangeMaxValue={this.onChangeMaxAmount}
+                onChangeAmount={this.onChangeAmount}
+                onInputData={this.onInputData}
             />
         )
     }
@@ -376,7 +446,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = (dispatch => ({
-    getData, getCategory, getTransaction
+    getData, getCategory, getTransaction, inputData, navigate
 }))();
 
 

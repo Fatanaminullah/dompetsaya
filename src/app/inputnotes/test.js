@@ -1,4 +1,4 @@
-filterDataTable = () => {
+const filterDataTable = () => {
     var data = this.props.report.filter(item => {
         var date = new Date(item.date)
         var dateState = new Date(this.state.date)

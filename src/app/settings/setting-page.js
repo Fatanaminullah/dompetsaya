@@ -76,36 +76,20 @@ class SettingPage extends Component {
     onAddCategory = () => {
         const {transaction,category} = this.state
         this.props.addCategory(transaction,category)
-        this.addSuccess()
         this.setState({
-            isLoading:true
+            modalAddCategory:false
         })
-        setTimeout(()=>{
-            this.setState({
-                isLoading:false,modalAddCategory:false
-            })
-        },2000)
     }
-    deleteSuccess = () => {
-        AtiMessage({type:'success', message:'Delete Success', duration:5});
-    };
-    editSuccess = () => {
-        AtiMessage({type:'success', message:'Edit Success', duration:5});
-    };
-    addSuccess = () => {
-        AtiMessage({type:'success', message:'Add Success', duration:5});
-    };
 
 
     handleDelete = (id) => {
         this.props.deleteCategory(id)
-        this.deleteSuccess()
     }
 
 
     onClickAddCategory = () => {
         this.setState({
-            isOpen:true
+            modalAddCategory:true
         })
     }
 
@@ -141,7 +125,6 @@ class SettingPage extends Component {
             category:'',
             modalEditCategory:false
         })
-        this.editSuccess()
     }
 
     onCancelEditCategory = () => {

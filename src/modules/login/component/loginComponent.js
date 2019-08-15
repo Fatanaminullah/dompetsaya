@@ -18,6 +18,7 @@ class loginComponent extends Component {
             onChange, initialData,
             validation, actionButtonSubmit,navigate
         } = this.props;
+        
         return (
             <React.Fragment>
                 <Row type='flex' align='middle' className='login'>

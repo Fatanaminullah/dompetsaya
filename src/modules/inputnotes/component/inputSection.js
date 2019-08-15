@@ -11,7 +11,8 @@ class InputSection extends Component {
             initialData, onValueChanges, validation,
             resetFilter, categoryType, onSelectCategory,
             onValueChangesTable, onSelectCategoryTable,
-            onChangeMinValue,onChangeMaxValue } = this.props
+            onChangeMinValue,onChangeMaxValue,onChangeAmount,
+            onInputData ,onDateInputChanged} = this.props
 
             
         return (
@@ -19,7 +20,12 @@ class InputSection extends Component {
                 <AtiCard
                     isLoading={false}
                     hoverable
-                    cardTitle="Input Your Daily Income and Expenditure"
+                    cardTitle={
+                        <Row type='flex' justify='space-between'>
+                            <p>Input Your Daily Income and Spending</p>
+                            <p>Your Balance Rp {initialData.myBalance.toLocaleString()}</p>
+                        </Row>
+                    }
                     content={
                         <div>
                             <AtiForm
@@ -40,7 +46,14 @@ class InputSection extends Component {
                                             <AtiDatePicker
                                                 id="dateInput"
                                                 name="dateInput"
-                                                value={Date.now()}
+                                                defaultValue={initialData.dateInput}
+                                                events={
+                                                    {
+                                                        onDateChange: (e) => {
+                                                            onDateInputChanged(e)
+                                                        }
+                                                    }
+                                                }
                                                 dateFormat="DD-MM-YYYY"
                                             />
                                             <AtiFieldError />
@@ -90,6 +103,25 @@ class InputSection extends Component {
                                 <Row type='flex' justify='start'>
                                     <Col span={8}>
                                         <p className='text-secondary'>
+                                            Amount
+                                        </p>
+                                    </Col>
+                                    <Col span={16}>
+                                        <AtiField name="amount">
+                                            <AtiTextInputNumeric
+                                                id="amount"
+                                                name="amount"
+                                                value={initialData.amount}
+                                                events={{onValueChange:onChangeAmount}}
+                                                placeholder="write your amount here"
+                                                thousandSeparator={true}
+                                            />
+                                        </AtiField>
+                                    </Col>
+                                </Row>
+                                <Row type='flex' justify='start'>
+                                    <Col span={8}>
+                                        <p className='text-secondary'>
                                             Notes
                                 </p>
                                     </Col>
@@ -111,6 +143,7 @@ class InputSection extends Component {
                                         <AtiButton
                                             text="Input"
                                             className='btn-outline-success'
+                                            events={{onClick:onInputData}}
                                             size='lg'
                                         />
                                     </Col>
@@ -197,11 +230,19 @@ class InputSection extends Component {
 
                             </Row>
                             <Row type='flex'>
-                                <Table
+                                <AtiTable
+                                    bordered={false}
                                     loading={initialData.isLoading}
                                     dataSource={initialData.dataTable}
                                     columns={initialData.columns}
                                     style={{ width: '100%' }}
+                                    events={
+                                        {
+                                            onChange: () => {},
+                                            onHeaderRow: (column, index) => {},
+                                            onExpandedRowsChange: (expandedRows) => {},
+                                        }
+                                    }
                                 />
 
                             </Row>

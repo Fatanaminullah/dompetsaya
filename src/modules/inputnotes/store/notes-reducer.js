@@ -1,4 +1,4 @@
-import { GET_DATA } from './notes-action-type'
+import { GET_DATA,POST_DATA } from './notes-action-type'
 
 
 const initialState = {
@@ -10,6 +10,8 @@ export default (state=initialState,action) => {
 
     switch (type) {
         case GET_DATA:
+            return {...state,report:payload}
+        case POST_DATA:
             return {...state,report:payload}
         default:
             return state

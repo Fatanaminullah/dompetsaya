@@ -30,9 +30,10 @@ class ProfilePicture extends Component {
                         showUploadList={false}
                         listType="picture-card"
                         // action='http://localhost:2000/upload/avatar/1'
-                    events={
-                        onchange=uploadingAvatar
-                    }
+                    // events={{
+                    //     onChange: () => {uploadingAvatar()}
+                    // }
+                    // }
                     />
                 }
             />

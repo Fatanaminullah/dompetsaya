@@ -7,7 +7,7 @@ import CONSTANTS from '../../common/utils/Constants';
 
 
 class LoginPage extends Component {
-    state ={
+    state = {
         username:'',
         password:''
     }
@@ -18,7 +18,7 @@ class LoginPage extends Component {
       }
     }
 
-    onChange = e => {
+    onValueChange = e => {
       if (e.target.id === 'username') {
         this.setState({ username: e.target.value });
       }
@@ -33,8 +33,10 @@ class LoginPage extends Component {
       this.props.onLogin(username,password)
     }
     validate = (values) => {
+      
       const errors = {};
       if (!values.username) {
+        console.log("value" ,values);
           errors.username = 'This field is required';
         }
         if (!values.password) {
@@ -47,7 +49,7 @@ class LoginPage extends Component {
         return(
             <React.Fragment>
                 <LoginComponent 
-                    onChange={this.onChange}
+                    onChange={this.onValueChange}
                     validation={this.validate}
                     initialData={this.state}
                     actionButtonSubmit={this.actionButtonSubmit.bind(this)}

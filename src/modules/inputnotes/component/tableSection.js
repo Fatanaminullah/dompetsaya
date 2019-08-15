@@ -1,5 +1,6 @@
 import React , { Component } from 'react'
 import { Table, Row } from 'antd';
+import { AtiTable, AtiTableForm } from 'ati-react-web';
 
 class TableSection extends Component {
     render(){
@@ -9,13 +10,17 @@ class TableSection extends Component {
               income: 500000,
               expenditure: 35000,
               differences: 465000,
-              date:'08-10-2019',
-              yourbalance:465000
-
+              date:'08-10-2019'
             },
           ];
           
           const columns = [
+            {
+              title: 'Date',
+              dataIndex: 'date',
+              key: 'date',
+              sorter: (a, b) => a.date - b.date
+            },
             {
               title: 'Income',
               dataIndex: 'income',
@@ -23,7 +28,7 @@ class TableSection extends Component {
               sorter: (a, b) => a.income - b.income
             },
             {
-              title: 'Expenditure',
+              title: 'Spending',
               dataIndex: 'expenditure',
               key: 'expenditure',
               sorter: (a, b) => a.expenditure - b.expenditure
@@ -33,27 +38,23 @@ class TableSection extends Component {
               dataIndex: 'differences',
               key: 'differences',
               sorter: (a, b) => a.differences - b.differences
-            },
-            {
-              title: 'Date',
-              dataIndex: 'date',
-              key: 'date',
-              sorter: (a, b) => a.date - b.date
-            },
-            {
-              title: 'Your Balance',
-              dataIndex: 'yourbalance',
-              key: 'yourbalance',
-              sorter: (a, b) => a.yourbalance - b.yourbalance
             }
           ];
         return(
             <React.Fragment>
                 <Row type='flex' style={{backgroundColor:'#fff'}}>
-                <Table 
+                <AtiTable
+                    showHeader={true} 
                     dataSource={dataSource}
                     columns={columns}
                     style={{width:'100%'}}
+                    events={
+                      {
+                          onChange: () => {},
+                          onHeaderRow: (column, index) => {},
+                          onExpandedRowsChange: (expandedRows) => {},
+                      }
+                  }
                 />
                 </Row>
             </React.Fragment>

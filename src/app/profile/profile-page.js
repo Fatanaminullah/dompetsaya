@@ -40,9 +40,6 @@ class ProfilePage extends Component {
             this.avatar()
         }
     }
-    editSuccess = () => {
-        AtiMessage({type:'success', message:'Edit Success', duration:5});
-    };
 
     avatar = () => {
         if(this.props.personalInfo.length !== 0){
@@ -97,13 +94,11 @@ class ProfilePage extends Component {
         const {firstname,lastname,username,email,birthday,gender} = this.state
         this.props.editProfile(cookie.get('id'),firstname,lastname,username,email,birthday,gender)
         this.setState({editPersonalInfo:false})
-        this.editSuccess()
     }
     saveEditAddress = () => {
         const {address,city,country,phone} = this.state
         this.props.editAddress(cookie.get('id'),address,city,country,phone)
         this.setState({editAddressContact:false})
-        this.editSuccess()
     }
 
     handleChange = e => {

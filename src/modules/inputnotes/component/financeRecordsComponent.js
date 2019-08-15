@@ -7,52 +7,40 @@ import TableSection from './tableSection';
 
 class FinanceRecordsComponent extends Component {
 
-    static propTypes ={
-        prop:PropTypes
+    static propTypes = {
+        prop: PropTypes
     }
 
-    render(){
-        const { onDateChanged,onDateInputChanged,
-                transactionType,initialData,validation,
-                onValueChanges,resetFilter,categoryType,
-                onSelectCategory,onValueChangesTable,
-                onSelectCategoryTable,onChangeMinValue,onChangeMaxValue} = this.props
-        
-        return(
+    render() {
+        const { onDateChanged, onDateInputChanged,
+            transactionType, initialData, validation,
+            onValueChanges, resetFilter, categoryType,
+            onSelectCategory, onValueChangesTable,
+            onSelectCategoryTable, onChangeMinValue,
+            onChangeMaxValue, onChangeAmount, onInputData } = this.props
+
+        return (
             <React.Fragment>
                 <h3 className='text-secondary'>Financial Records</h3>
                 <Row type='flex' justify='center'>
                     <Col span={24} >
-                        <AtiTabsGroup 
-                            tabPosition="top"
-                            activeKey="tab1"
-                            type="card"
-                            dataSource={[
-                                { 
-                                    title: 'Input', key: 'tab1', 
-                                    tabContent: 
-                                    <InputSection 
-                                        initialData={initialData}
-                                        onDateChanged={onDateChanged}
-                                        onDateInputChanged={onDateInputChanged}
-                                        transactionType={transactionType}
-                                        validation={validation}
-                                        onValueChanges={onValueChanges}
-                                        onValueChangesTable={onValueChangesTable}
-                                        resetFilter={resetFilter}
-                                        categoryType={categoryType}
-                                        onSelectCategory={onSelectCategory}
-                                        onSelectCategoryTable={onSelectCategoryTable}
-                                        onChangeMaxValue={onChangeMaxValue}
-                                        onChangeMinValue={onChangeMinValue}
-                                    /> 
-                                },
-                                { 
-                                    title: 'Finance Table', key: 'tab2', 
-                                    tabContent: <TableSection />
-                                },
-                            ]}
-                        />  
+                        <InputSection
+                            initialData={initialData}
+                            onDateChanged={onDateChanged}
+                            onDateInputChanged={onDateInputChanged}
+                            transactionType={transactionType}
+                            validation={validation}
+                            onValueChanges={onValueChanges}
+                            onValueChangesTable={onValueChangesTable}
+                            resetFilter={resetFilter}
+                            categoryType={categoryType}
+                            onSelectCategory={onSelectCategory}
+                            onSelectCategoryTable={onSelectCategoryTable}
+                            onChangeMaxValue={onChangeMaxValue}
+                            onChangeMinValue={onChangeMinValue}
+                            onChangeAmount={onChangeAmount}
+                            onInputData={onInputData}
+                        />
                     </Col>
                 </Row>
             </React.Fragment>
