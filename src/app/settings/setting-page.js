@@ -2,12 +2,19 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import SettingComponent from '../../modules/settings/component/settingComponent';
 import { getCategory, getTransaction, addCategory,deleteCategory,editCategory} from '../../modules/settings/store/setting-action'
+import { getProfile,editBalance } from '../../modules/profile/store/profile-action'
 import { AtiSelectBox, AtiTextbox, AtiButton,AtiMessage } from 'ati-react-web';
 import { Popconfirm, Row } from 'antd'
+import Cookies from 'universal-cookie';
+
+const cookie = new Cookies()
 
 class SettingPage extends Component {
 
     state = {
+        minBalance:'',
+        minRange:100000,
+        maxRange:10000000,
         showError:false,
         editId:'',
         category:'',
@@ -15,6 +22,8 @@ class SettingPage extends Component {
         modalAddCategory:false,
         modalEditCategory:false,
         isLoading: false,
+        editBalance:false,
+        notified:'',
         columnTable: [
             {
                 title:'ID',
@@ -59,20 +68,37 @@ class SettingPage extends Component {
     componentDidMount() {
         this.props.getCategory()
         this.props.getTransaction()
+        this.props.getProfile(cookie.get('id'))
     }
-
+    componentDidUpdate(prevProps){
+        if(prevProps.personalInfo !== this.props.personalInfo){
+            this.setState({minBalance:this.props.personalInfo[0].minimum_balance,notified:this.props.personalInfo[0].notified})
+        }
+    }
+    editBalance = () => {
+        this.setState({editBalance:!this.state.editBalance})
+    }
+    saveBalance = () => {
+        const {minBalance,notified} = this.state
+        this.props.editBalance(cookie.get('id'),minBalance,notified)
+        this.setState({editBalance:!this.state.editBalance})
+    }
+    onBalanceChanged = e =>{      
+        this.setState({minBalance:e})
+    }
     onSelectTransaction = e => {
         this.setState({
             transaction:e.value
         })
     }
-
+    onChangedNotified = e => {
+        e === true ? this.setState({notified:'YES'}) : this.setState({notified:'NO'})
+    }
     onChangedCategory = e => {
         this.setState({
             category:e.target.value
         })
     }
-
     onAddCategory = () => {
         const {transaction,category} = this.state
         this.props.addCategory(transaction,category)
@@ -80,19 +106,14 @@ class SettingPage extends Component {
             modalAddCategory:false
         })
     }
-
-
     handleDelete = (id) => {
         this.props.deleteCategory(id)
     }
-
-
     onClickAddCategory = () => {
         this.setState({
             modalAddCategory:true
         })
     }
-
     onClickEditCategory = (id,transactionType) => {
         this.setState({
             modalEditCategory:true
@@ -116,7 +137,6 @@ class SettingPage extends Component {
         
 
     }
-
     onEditCategory = (id) => {
         const { transaction,category } = this.state
         this.props.editCategory(id,transaction,category)
@@ -126,20 +146,16 @@ class SettingPage extends Component {
             modalEditCategory:false
         })
     }
-
     onCancelEditCategory = () => {
         this.setState({
             modalEditCategory:false
         })
     }
-
     onCancelAddCategory = () => {
         this.setState({
-            isOpen:false
+            modalAddCategory:false
         })
     }
-
-    
     render() {
         this.props.master_kategori.length == 0 
         ? this.state.isLoading = true 
@@ -148,34 +164,31 @@ class SettingPage extends Component {
 
         return (
             <SettingComponent
-                isLoading={this.state.isLoading}
+                initialData={this.state}
                 transaction_type={this.props.transaction_type}
-                columnTable={this.state.columnTable}
                 dataTable={this.props.master_kategori}
-                onClickAddCategory={this.onClickAddCategory.bind(this)}
-                modalAddCategory={this.state.modalAddCategory}
-                modalEditCategory={this.state.modalEditCategory}
-                onClickCancelCategory={this.onCancelAddCategory.bind(this)}
-                showError={this.state.showError}
+                onClickAddCategory={this.onClickAddCategory}
+                onClickCancelCategory={this.onCancelAddCategory}
                 onSelectTransaction={this.onSelectTransaction}
-                transaction={this.state.transaction}
-                category={this.state.category}
                 onChangedCategory={this.onChangedCategory}
-                onAddCategory={this.onAddCategory.bind(this)}
+                onAddCategory={this.onAddCategory}
                 onCancelEditCategory={this.onCancelEditCategory}
                 onEditCategory={this.onEditCategory}
-                editId={this.state.editId}
+                onBalanceChanged={this.onBalanceChanged}
+                onEditBalance={this.editBalance}
+                onChangedNotified={this.onChangedNotified}
+                saveBalance={this.saveBalance}
             />
         )
     }
 }
 
 const mapStateToProps = state => ({
-    ...state.layout, ...state.setting
+    ...state.profile, ...state.setting
 });
 
 const mapDispatchToProps = (dispatch => ({
-    getCategory, getTransaction, addCategory, deleteCategory,editCategory
+    getCategory, getTransaction, addCategory, deleteCategory,editCategory,getProfile,editBalance
 }))();
 
 export default connect(mapStateToProps, mapDispatchToProps)(SettingPage)

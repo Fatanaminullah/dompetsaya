@@ -11,7 +11,7 @@ export default class AtiLayout extends React.Component {
             <React.Fragment>
                     <Layout style={{ height: "100%" }}>
                         <AtiBackTop 
-                            visibilityHeight='100'
+                            visibilityHeight='200'
                         />
                         <LayoutSider {...this.props} />
                         <Layout>

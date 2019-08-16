@@ -11,7 +11,7 @@ export default (state=initialState,action) => {
 
     switch(type){
         case LOGIN_SUCCESS:
-            return {...state, username:payload.username, password: payload.password}
+            return {...state, username:payload[0].username, password: payload[0].password}
         case LOGIN_FAILED:
             return{...state, error:payload}
         default :

@@ -4,6 +4,7 @@ import LoginComponent from '../../modules/login/component/loginComponent';
 import { onLogin } from '../../modules/login/store/login-action'
 import { navigate } from '../../common/store/action/general-action';
 import CONSTANTS from '../../common/utils/Constants';
+import {getFormValues} from 'redux-form';
 
 
 class LoginPage extends Component {
@@ -32,20 +33,21 @@ class LoginPage extends Component {
       const {username,password} = this.state
       this.props.onLogin(username,password)
     }
-    validate = (values) => {
-      
-      const errors = {};
-      if (!values.username) {
-        console.log("value" ,values);
-          errors.username = 'This field is required';
-        }
-        if (!values.password) {
-          errors.password = 'This field is required';
-        }
-        return errors;
-      }
+  validate = (values) => {
+
+    const errors = {};
+    if (!values.username) {
+      console.log("value", values);
+      errors.username = 'This field is required';
+    }
+    if (!values.password) {
+      errors.password = 'This field is required';
+    }
+    return errors;
+  }
 
     render(){
+      console.log(this.props.formValues)
         return(
             <React.Fragment>
                 <LoginComponent 
@@ -61,7 +63,8 @@ class LoginPage extends Component {
 }
 
 const mapStateToProps = state => ({
-  ...state.layout,...state.login
+  ...state, ...state.login,
+  // formValues: getFormValues('form-login')(state)
 });
 
 const mapDispatchToProps = (dispatch => ({

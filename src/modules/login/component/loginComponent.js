@@ -7,6 +7,15 @@ import CONSTANTS from '../../../common/utils/Constants';
 
 import '../../../assets/css/login-page.css'
 
+const newValidation = {
+    required: (values) => {
+        if (!values) {
+            console.log('validation',values)
+            return 'field required';
+        }
+        return null
+    }
+}
 
 class loginComponent extends Component {
     static propTypes = {
@@ -31,8 +40,8 @@ class loginComponent extends Component {
                                 content={
                                     <AtiForm
                                         initialValues={initialData}
-                                        // onSubmit={onSubmit}
-                                        formId="login-form"
+                                        // onSubmit={actionButtonSubmit}
+                                        formId="form-login"
                                         validation={validation}
                                         style={{ width: '50%' }}
                                         className='form form-login'
@@ -45,11 +54,14 @@ class loginComponent extends Component {
                                         </Row>
                                         <Row type="flex" justify="center" className="row-space">
                                             <Col span={24}>
-                                                <AtiField name="username" >
+                                                <AtiField name="username"
+                                                // validate={[newValidation.required]} 
+                                                >
                                                     <AtiTextbox
                                                         id="username"
                                                         name="username"
                                                         className="login-form"
+                                                        error={true}
                                                         placeholder="Username ... "
                                                         type="text"
                                                         value={initialData.username}
@@ -121,8 +133,8 @@ class loginComponent extends Component {
                                         </Row>
 
                                     </AtiForm>
-                                }
-                            />
+                                 }
+                            /> 
                         </Row>
                     </Col>
                 </Row>

@@ -3,6 +3,7 @@ import { AtiCard, AtiDatePicker, AtiSelectBox, AtiTextAreaField, AtiButton, AtiT
 import { Row, Col, Table } from 'antd'
 import { sortData } from '../../../common/utils/table-utils';
 import { AtiForm, AtiField } from 'ati-reduxform-web';
+import BalanceTag from '../../../common/general-component/balance/component/balanceTag'
 
 
 class InputSection extends Component {
@@ -12,9 +13,7 @@ class InputSection extends Component {
             resetFilter, categoryType, onSelectCategory,
             onValueChangesTable, onSelectCategoryTable,
             onChangeMinValue,onChangeMaxValue,onChangeAmount,
-            onInputData ,onDateInputChanged} = this.props
-
-            
+            onInputData ,onDateInputChanged} = this.props         
         return (
             <React.Fragment>
                 <AtiCard
@@ -23,7 +22,10 @@ class InputSection extends Component {
                     cardTitle={
                         <Row type='flex' justify='space-between'>
                             <p>Input Your Daily Income and Spending</p>
-                            <p>Your Balance Rp {initialData.myBalance.toLocaleString()}</p>
+                            <BalanceTag 
+                                balance={initialData.myBalance}
+                                minBalance={initialData.minBalance}
+                            />
                         </Row>
                     }
                     content={
@@ -33,7 +35,6 @@ class InputSection extends Component {
                                 // onSubmit={onSubmitForm}
                                 formId="input-form"
                                 validation={validation}
-
                             >
                                 <Row type='flex' justify='start'>
                                     <Col span={8}>

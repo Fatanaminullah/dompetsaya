@@ -5,15 +5,10 @@ import { AtiSelectBox, AtiButton, AtiModals, AtiTextbox, AtiTable } from 'ati-re
 class CategorySetting extends Component {
     render(){
         const { 
-            columnTable,dataTable,
-            onClickAddCategory,modalAddCategory,
-            onClickCancelCategory,transaction_type,
-            showError,onSelectTransaction,transaction ,
-            category,onChangedCategory,onAddCategory,
-            modalEditCategory,onCancelEditCategory,onEditCategory,
-            editId} = this.props
-            console.log(transaction);
-            
+            dataTable,onClickAddCategory,onClickCancelCategory,
+            transaction_type,onSelectTransaction,onChangedCategory,
+            onAddCategory,onCancelEditCategory,onEditCategory,
+            initialData} = this.props
         return(
             <React.Fragment>
                 <AtiModals
@@ -35,7 +30,7 @@ class CategorySetting extends Component {
                             }
                         />
                     </Row>}
-                    isOpen={modalAddCategory}
+                    isOpen={initialData.modalAddCategory}
                     >
                         <div>
                             <Row type='flex' justify='left'>
@@ -47,7 +42,7 @@ class CategorySetting extends Component {
                                     events={
                                         {onItemChanged:onSelectTransaction}
                                     }
-                                    value={transaction}
+                                    value={initialData.transaction}
                                 />
                             </Row>
                             <Row type='flex' justify='left'>
@@ -56,8 +51,8 @@ class CategorySetting extends Component {
                                     name='categoryname'
                                     label='Input Category Name'
                                     placeholder='Write category name here...'
-                                    showError={showError}
-                                    value={category}
+                                    showError={initialData.showError}
+                                    value={initialData.category}
                                     events={
                                         {onChange:onChangedCategory}
                                     }
@@ -80,11 +75,11 @@ class CategorySetting extends Component {
                             text='Save'
                             className='btn btn-outline-success mx-1'
                             events={
-                                {onClick: () => {onEditCategory(editId)}}
+                                {onClick: () => {onEditCategory(initialData.editId)}}
                             }
                         />
                     </Row>}
-                    isOpen={modalEditCategory}
+                    isOpen={initialData.modalEditCategory}
                     >
                         <div>
                             <Row type='flex' justify='left'>
@@ -96,7 +91,7 @@ class CategorySetting extends Component {
                                     events={
                                         {onItemChanged:onSelectTransaction}
                                     }
-                                    value={transaction}
+                                    value={initialData.transaction}
                                 />
                             </Row>
                             <Row type='flex' justify='left'>
@@ -105,8 +100,8 @@ class CategorySetting extends Component {
                                     name='categoryname'
                                     label='Input Category Name'
                                     placeholder='Write category name here...'
-                                    showError={showError}
-                                    value={category}
+                                    showError={initialData.showError}
+                                    value={initialData.category}
                                     events={
                                         {onChange:onChangedCategory}
                                     }
@@ -126,7 +121,7 @@ class CategorySetting extends Component {
                 </Row>
                 <Row style={{backgroundColor:'#fff'}}>
                 <Table 
-                    columns={columnTable}
+                    columns={initialData.columnTable}
                     dataSource={dataTable}
                     pagination={{
                         defaultPageSize:5

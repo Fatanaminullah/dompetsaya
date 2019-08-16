@@ -2,11 +2,13 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { getData, inputData } from '../../modules/inputnotes/store/notes-action'
 import { getCategory, getTransaction } from '../../modules/settings/store/setting-action'
+import { getProfile } from '../../modules/profile/store/profile-action'
 import FinanceRecordsComponent from '../../modules/inputnotes/component/financeRecordsComponent'
 import { Row, Popconfirm } from 'antd'
 import Cookies from 'universal-cookie';
 import { sortData } from '../../common/utils/table-utils'
 import { navigate } from '../../common/store/action/general-action'
+import { getFormValues,getFormInitialValues } from 'redux-form'
 
 
 const cookie = new Cookies()
@@ -62,17 +64,16 @@ class FinanceRecordsPage extends Component {
         isLoading: true,dataTable: [],
         notes: '',searchNotes: '',
         transaction: 1,transactionTable: '',
-        category: 1,categoryTable: '',
+        category: 1,categoryTable: '',minBalance:0,
         master_kategori: [],master_kategoriTable: [],
         minAmount: '',maxAmount: '',amount: '',myBalance: 0
     }
-
     componentDidMount() {
         this.props.getData(cookie.get('id'))
         this.props.getCategory()
         this.props.getTransaction()
+        this.props.getProfile(cookie.get('id'))
     }
-
     componentDidUpdate(prevProps, prevState) {
         if (this.props !== prevProps) {
             this.setState({ isLoading: false })
@@ -80,6 +81,10 @@ class FinanceRecordsPage extends Component {
             this.filterCategory()
             this.filterCategoryTable()
             this.getBalance()
+        } 
+        if(prevProps.personalInfo !== this.props.personalInfo){
+            console.log(this.props.personalInfo[0].minimum_balance);
+            this.setState({minBalance:this.props.personalInfo[0].minimum_balance})
         }
         if (prevState.transaction !== this.state.transaction) {
             this.filterCategory()
@@ -95,7 +100,6 @@ class FinanceRecordsPage extends Component {
             this.getBalance()
         }
     }
-
     onInputData = () => {
         const { transaction, category, notes, dateInput, amount } = this.state
         const data = {
@@ -115,7 +119,6 @@ class FinanceRecordsPage extends Component {
             amount: ''
         })
     }
-
     getBalance = () => {
         const { report } = this.props
         var income = 0
@@ -131,7 +134,6 @@ class FinanceRecordsPage extends Component {
         balance = income - spending
         this.setState({ myBalance: balance })
     }
-
     filterDataTable = () => {
         var data = this.props.report.filter(item => {
             var date = new Date(item.date)
@@ -347,7 +349,6 @@ class FinanceRecordsPage extends Component {
         })
         this.setState({ master_kategoriTable: arrCategory2 })
     }
-
     onValueChanges = e => {
         if (e.target !== undefined) {
             if (e.target.id === "notes") {
@@ -383,10 +384,8 @@ class FinanceRecordsPage extends Component {
     }
     validate = (values) => {
         const errors = {};
-        console.log(values);
-
         if (!values.notes) {
-            errors.username = 'This field is required';
+            errors.notes = 'This field is required';
         }
         return errors;
     }
@@ -419,6 +418,8 @@ class FinanceRecordsPage extends Component {
     }
 
     render() {
+        console.log(this.props.formValues);
+        
         return (
             <FinanceRecordsComponent
                 initialData={this.state} 
@@ -442,11 +443,12 @@ class FinanceRecordsPage extends Component {
 }
 
 const mapStateToProps = state => ({
-    ...state.notes, ...state.setting
+    ...state.notes, ...state.setting,...state.profile,
+    formValues: getFormInitialValues('input-form')(state)
 });
 
 const mapDispatchToProps = (dispatch => ({
-    getData, getCategory, getTransaction, inputData, navigate
+    getData, getCategory, getTransaction, inputData, navigate,getProfile
 }))();
 
 

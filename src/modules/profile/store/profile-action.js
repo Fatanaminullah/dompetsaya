@@ -1,6 +1,6 @@
 import { GET_PROFILE, EDIT_PROFILE, UPLOAD_AVATAR } from './profile-action-type'
 import Axios from '../../../config/axios'
-import { success,error } from '../../../common/general-component/message/alertMessage'
+import { success,error, errorMessage } from '../../../common/general-component/message/alertMessage'
 import Cookies from 'universal-cookie';
 
 const cookie = new Cookies()
@@ -14,7 +14,7 @@ export const getProfile = (id) => {
             })
         }).catch(error => {
             console.log(error.response.message)
-            error("Failed to Load your Profile")
+            errorMessage("Failed to Load your Profile")
         })
     }
 }
@@ -33,7 +33,7 @@ export const editProfile = (id,nama_depan,nama_belakang,username,email,kelahiran
             success("Profile Updated",5)
         }).catch(error => {
             console.log(error.response);
-            error(error.response.message,5)
+            errorMessage(error.response.message,5)
         })
     }
 }
@@ -48,8 +48,24 @@ export const editAddress = (id,alamat,kota,negara,nomor_telepon) => {
             })
             success("Profile Updated",5)
         }).catch(error => {
-            error(error.response.message,5)
+            errorMessage(error.response.message,5)
             console.log(error.response);
+        })
+    }
+}
+export const editBalance = (id,minimum_balance,notified) => {
+    return dispatch => {
+        Axios.patch(`/users/edit/${id}`,{
+            minimum_balance,notified
+        }).then(res => {
+            dispatch({
+                type:EDIT_PROFILE,
+                payload:res.data
+            })
+            success("Minimum Balance Updated",5)
+        }).catch(error => {
+            console.log(error.response);
+            errorMessage(error.response.data,5)
         })
     }
 }
@@ -72,12 +88,12 @@ export const uploadAvatar = (id,imagefile) => {
                 )
                 dispatch({
                     type: UPLOAD_AVATAR,
-                    payload:res.data
+                    payload:res.data[0]
                 });
                 success("Profile Updated",5)
             } catch (e) {
                 console.log("upload gagal" + e);
-                error(e.response.message,5)
+                errorMessage(e.response.message,5)
             }
         }
 }

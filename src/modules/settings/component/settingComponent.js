@@ -8,20 +8,18 @@ class SettingComponent extends Component {
 
     render(){
         const { 
-            isLoading,transaction_type,dataTable,
-            columnTable,onClickAddCategory,
-            modalAddCategory, onClickCancelCategory,
-            showError,onSelectTransaction, transaction,
-            category,onChangedCategory,onAddCategory,
-            modalEditCategory,onCancelEditCategory,onEditCategory,
-            editId} = this.props
-        console.log(dataTable);
+            transaction_type,dataTable,initialData,
+            onClickAddCategory,onClickCancelCategory,
+            onSelectTransaction,onChangedCategory,onAddCategory,
+            onCancelEditCategory,onEditCategory,
+            onBalanceChanged,onEditBalance,onChangedNotified,
+            saveBalance} = this.props
         return(
             <React.Fragment>
                 <AtiSpinner
                     size={'large'}
                     tip={'loading'}
-                    spinning={isLoading}
+                    spinning={initialData.isLoading}
                 >
                 <h3 className='text-secondary'>Setting Pages</h3>
                 <Row type='flex' justify='center'>
@@ -35,28 +33,28 @@ class SettingComponent extends Component {
                                     title: 'Category Setting', key: 'tab1', 
                                     tabContent: 
                                     <CategorySetting 
+                                        initialData={initialData}
                                         dataTable={dataTable}
-                                        columnTable={columnTable}
                                         transaction_type={transaction_type}
                                         onClickAddCategory={onClickAddCategory}
-                                        modalAddCategory={modalAddCategory}
                                         onClickCancelCategory={onClickCancelCategory}
-                                        showError={showError}
                                         onSelectTransaction={onSelectTransaction}
-                                        transaction={transaction}
-                                        category={category}
                                         onChangedCategory={onChangedCategory}
                                         onAddCategory={onAddCategory}
-                                        modalEditCategory={modalEditCategory}
                                         onCancelEditCategory={onCancelEditCategory}
                                         onEditCategory={onEditCategory}
-                                        editId={editId}
-                                        
                                     />
                                 },
                                 { 
                                     title: 'Balance Setting', key: 'tab2', 
-                                    tabContent: <BalanceSetting />
+                                    tabContent: 
+                                    <BalanceSetting 
+                                        initialData={initialData}
+                                        onBalanceChanged={onBalanceChanged}
+                                        onEditBalance={onEditBalance}
+                                        onChangedNotified={onChangedNotified}
+                                        saveBalance={saveBalance}
+                                    />
                                 },
                             ]}
                         />

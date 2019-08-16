@@ -20,7 +20,7 @@ export const inputData = (params) => {
     return dispatch => {
         Axios.post(`/addreport/${params.user_id}`, params).then(res => {
             dispatch({
-                type: POST_DATA,
+                type: GET_DATA,
                 payload: res.data
             })
             success('Input Data Success',5)
